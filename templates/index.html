@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Homepage</title>
+    <style>
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            max-height: 300px;
+            object-fit: cover;
+            transition: opacity 2s ease-in-out;
+        }
+
+        .thumbnail {
+            padding: 0px;
+            margin: 0px;
+        }
+
+        h1,
+        h2,
+        h3,
+        p {
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            margin-top: 0px;
+            max-width: none;
+            padding: 20px;
+        }
+
+        .fade-in {
+            opacity: 0;
+            /* Start as invisible */
+            transition: opacity 2s ease-in-out;
+        }
+
+        @keyframes bounceIn {
+            from {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body style="padding: 0px;margin: 0px;">
+    <!-- Navigation Bar -->
+    <header>
+        <nav class="navBar">
+            <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='images/logo.png') }}" alt="logo"></a>
+            <div class="loginWrapper">
+                <a class="loginbtn" href="{{ url_for('login') }}">Login</a>
+                <a class="loginbtn" href="{{ url_for('signup') }}">Sign Up</a>
+                <a href="{{ url_for('logout') }}" style="display: flex; justify-content: center; align-items: center;"><img style="height: 35px;" src="{{ url_for('static', filename='images/logout.webp') }}"></a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Navigation Bar Spacing -->
+    <div style="height: 60px;"></div>
+
+    <div class="container fade-in" id="welcome-section">
+        <h1>Welcome to SecureWeb</h1>
+        <span><b>Protecting Your Digital Journey with AI.</b></span>
+        <p>In today's digital age, navigating the web safely is more crucial than ever. SecureWeb is your trusted
+            companion, offering a cutting-edge web app and browser extension designed to detect fake webpages and
+            phishing content using advanced AI technology.</p>
+    </div>
+
+    <div class="thumbnail fade-in" id="thumbnail-section">
+        <img src="../static/images/home_intro1.png" alt="">
+    </div>
+
+    <div class="container fade-in" id="why-secureweb-section" style="background-color: rgb(244, 244, 244);">
+        <h2>Why Choose SecureWeb?</h2>
+        <ul>
+            <li><b>Real-Time Protection: </b>Our AI algorithms analyze web pages in real-time, identifying and blocking
+                malicious content before it can harm you.</li>
+            <br>
+            <li><b>Comprehensive Coverage: </b>Whether you’re browsing, shopping, or managing your finances online,
+                SecureWeb ensures your safety across all platforms.</li>
+            <br>
+            <li><b>User-Friendly Interface: </b>Easy to install and use, our browser extension integrates seamlessly
+                into your daily browsing experience.</li>
+        </ul>
+    </div>
+
+    <div class="container fade-in" id="how-it-works-section">
+        <h2>How It Works</h2>
+        <ul>
+            <li><b>AI-Powered Detection: </b>Our sophisticated AI scans URLs and web content to identify suspicious
+                patterns and behaviors.</li>
+            <br>
+            <li><b>Instant Alerts: </b>Receive immediate notifications if you encounter a potentially dangerous site.
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const fadeInElements = document.querySelectorAll('.fade-in');
+
+            const fadeInObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1'; // Fade in element
+                        observer.unobserve(entry.target); // Stop observing the element
+                    }
+                });
+            }, observerOptions);
+
+            fadeInElements.forEach(element => fadeInObserver.observe(element));
+        });
+    </script>
+</body>
+</html>

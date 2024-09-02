@@ -28,7 +28,8 @@ function scanQRCode() {
             });
 
             if (code) {
-                document.getElementById('result').innerText = `${code.data}`;
+                document.getElementById('result').innerText = `Found ${code.data}`;
+                document.getElementById('url').value = code.data;
             } else {
                 document.getElementById('result').innerText = 'No QR Code found';
             }
@@ -70,11 +71,31 @@ document.getElementById("emailsmsScanner").addEventListener("submit", async (ev)
     }
 });
 
-document.getElementById('reportButton').addEventListener('click', function (event) {
-    event.preventDefault(); // Prevent form submission
-    document.getElementById('popup').hidden = false;
-});
+document.getElementById("pageScanner").addEventListener("submit", async (ev) => {
+    ev.preventDefault();
 
-function closePopup() {
-    document.getElementById('popup').hidden = true;
-}
+    const url = document.getElementById("url").value;
+    let res = await fetch("/verify/url", {
+        method: "POST",
+        headers: {
+            "Content-Type": "text/plain"
+        },
+        body: url
+    });
+    res = await res.json();
+    let ans = document.getElementById("urlScanMsg");
+    if(res['final_url'] !== url) {
+        document.getElementById("redirectMsg").innerText = `We detected that this URL redirects to ${res['final_url']}`;
+    }
+    else {
+        document.getElementById("redirectMsg").innerText = "";
+    }
+    if(res['phish'] === "True") {
+        ans.innerText = "This URL/QR Code is likely phishing you! Beaware of clicking it.";
+        ans.style.color = "red";
+    }
+    else {
+        ans.innerText = "This URL/QR Code is most likely safe.";
+        ans.style.color = "green";
+    }
+});

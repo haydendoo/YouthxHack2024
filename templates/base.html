@@ -20,6 +20,22 @@
 </head>
 
 <body>
+    <div id="popup">
+        <div class="popup">
+            <form id="reportUrl">
+                <h2>Report URL</h2>
+                <input id="urlReport" type="text" placeholder="Enter URL to report">
+                <br><br>
+                <button id="submitReportButton" disabled>Report</button>
+            </form>
+            <button id="cancelButton" style="margin-top: 10px;">Cancel</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <button id="openReportButton">Report URL</button>
+    </div>
+
     <!-- Navigation Bar -->
     <header>
         <nav class="navBar">
@@ -40,4 +56,41 @@
     <footer class="footer-container">
         © 2024 All Rights Reserved.
     </footer>
+
+    <script>
+        document.getElementById('openReportButton').addEventListener('click', () => {
+            document.getElementById('popup').style.display = 'flex';
+        });
+
+        document.getElementById('cancelButton').addEventListener('click', () => {
+            document.getElementById('popup').style.display = 'none';
+        });
+
+        const urlReportInput = document.getElementById('urlReport');
+        const submitReportButton = document.getElementById('submitReportButton');
+
+        urlReportInput.addEventListener('input', () => {
+            submitReportButton.disabled = urlReportInput.value.trim() === '';
+        });
+        const form = document.getElementById("reportUrl");
+        form.addEventListener("submit", async (ev) => {
+            ev.preventDefault();
+
+            let res = await fetch("/report", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "text/plain"
+                },
+                body: document.getElementById("urlReport").value
+            });
+            res = await res.json();
+            console.log(res);
+            if(res['success'] === "true") {
+                alert("Your report has been submitted! An administrator will take a look and approve it if it's appropriate.")
+            }
+            else {
+                alert("There was an error submitted your report. Contact us if issues persist.")
+            }
+        });
+    </script>
 </html>

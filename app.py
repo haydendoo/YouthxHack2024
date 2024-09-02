@@ -11,8 +11,12 @@ from argon2 import PasswordHasher
 import secrets
 import datetime
 import requests
+from urllib.parse import urlparse, quote, unquote
+import jwt
 
 from models.emailsms_phish import is_emailsms_phishing
+from models.url_phish.converter import Converter
+from models.url_phish.utils import is_url_phishing
 
 load_dotenv()
 
@@ -127,7 +131,7 @@ def signup():
             , (email, hash, secrets.token_urlsafe(64)))
             db.commit()
 
-            verification_link = f"http://127.0.0.1:5000/verify_email/{ generate_verify_token(email, expirtion) }"
+            verification_link = f"http://127.0.0.1:5000/verify_email/{ generate_verify_token(email) }"
 
         send_email(email, 'Verification for your account', 
                     f'''
@@ -210,13 +214,31 @@ def settings():
 
     return render_template('settings.html')
 
+
 # APIs
+def get_final_url(initial_url):
+    try:
+        response = requests.get(initial_url, allow_redirects=True)
+        return response.url
+    except requests.RequestException as e:
+        return initial_url
+
 @app.route('/verify/url', methods=["POST"])
 def verify_url():
     if not logged_in():
         abort(401)
 
-    pass
+    url = request.data.decode('utf-8')
+    url = get_final_url(url)
+    
+    # Check if its in malicious db
+    with open("malicious_db.txt", "r") as f:
+        netlocs = f.read().splitlines()
+        if urlparse(url).netloc in netlocs:
+            return jsonify({'phish': "True", 'final_url': url})
+
+    phish = is_url_phishing(url)
+    return jsonify({'phish': str(phish), 'final_url': url})
 
 @app.route('/verify/emailsms', methods=["POST"])
 def verify_emailsms():
@@ -232,31 +254,57 @@ def report():
     if not logged_in():
         abort(401)
 
-    url = request.data.decode("utf-8")
+    url = request.data.decode("utf-8").strip()
     if url == None:
         abort(404)
+
+    if not url.startswith("http://") and not url.startswith("https://"):
+        url = 'https://' + url
+
+    parsed_url = urlparse(url)    
 
     with app.app_context():
         db = get_db()
         cursor = db.cursor()
         email = cursor.execute("SELECT * FROM users WHERE id=?", (get_userid(),)).fetchone()[1]
-        approve_link = 
+
+        payload = {
+            'netloc': parsed_url.netloc,
+            'iat': datetime.datetime.now(datetime.timezone.utc)
+        }
+
+        token = jwt.encode(payload, app.config["SECRET_KEY"], algorithm="HS256")
+
+        approve_link = f"http://127.0.0.1:5000/report/approve/{ quote(token) }"
         data = {
             "username": "PhishNet Bot",
-            "content": f"{email} has reported a new phishing URL (```{url}```).\nClick here to approve of the new URL.\n{approve_link}"
+            "content": f"{email} has reported a new phishing URL\n```{url}```Click here to approve of the new URL.\n{approve_link}"
         }
         res = requests.post(WEBHOOK, json=data)
         if res.status_code // 100 != 2: # Check 1st digit is 2 or not
-            return jsonify({"success", "false"})
+            return jsonify({"success", "false"}), 500
+    return jsonify({"success": "true"}), 200
 
-    pass
+@app.route('/report/approve/<token>')
+def report_approve(token):
+    token = unquote(token)
+    token = jwt.decode(token, app.config["SECRET_KEY"], algorithms=['HS256'])
+    with open("malicious_db.txt", "r") as f:
+        db = f.read()
+        netlocs = db.splitlines()
+        if token['netloc'] in netlocs:
+            return 'This URL is already in the DB'
 
-@app.route('/report/approve/<id>', methods=['POST'])
-def report_approve(id):
-    if not logged_in():
-        abort(401)
+    db += token['netloc'] + "\n"
 
-    pass
+    with open("malicious_db.txt", "w") as f:
+        f.write(db)
+
+    # Extension db
+    with open("extensions/malicious_db.txt", "w") as f:
+        f.write(db)
+
+    return 'Added to DB!'
 
 @app.errorhandler(HTTPException)
 def error_page(error):
@@ -295,7 +343,7 @@ def verify(token):
 
 @app.route('/reset/<token>', methods=["POST", "GET"])
 def reset(token):
-    email = confirm_verify_token(token)
+    email = confirm_verify_token(token, expire=True)
     if email == False:
         abort(404)
 

@@ -7,22 +7,6 @@
 {% endblock %}
 
 {% block body %}
-    <div id="popup" hidden>
-        <div class="popup">
-            <div>
-                <h2>Report URL</h2>
-                <input id="urlReport" type="text" placeholder="Enter URL to report">
-                <br><br>
-                <form action="dashboard.html">
-                    <button onclick="g">Report</button>
-                </form>
-                <form style="margin-top: 10px;" action="dashboard.html">
-                    <button onclick="g">Cancel</button>
-                </form>
-            </div>
-        </div>
-    </div>
-
     <div class="container" style="margin-top: 0px;">
         <h1>Dashboard</h1>
         <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Magnam accusantium ipsa, necessitatibus iure fugiat
@@ -30,27 +14,23 @@
             maiores eum harum!</p>
     </div>
 
-    <!-- Traffic Light -->
-    <div class="box" id="trafficLight">
-        <h2 style="margin-top: 0;">Traffic Light</h2>
-        To Be Added.
-    </div>
-
     <!-- URL/QR Input -->
     <div class="box">
-        <form id="pageScanner" onsubmit="return false;">
+        <form id="pageScanner">
             <h2 style="margin-top: 0;">Page Scanner</h2>
             <label for="url"><b>Enter target page URL</b></label>
             <input style="margin-top: 10px;" type="text" placeholder="Enter URL" name="url" id="url"
                 oninput="canScan()">
             <div style="height: 15px;"></div>
             <label for="qr"><b>Upload QR code</b></label>
-            <input style="margin-top: 10px;" type="file" name="qr" id="qr" onchange="canScan()">
+            <input style="margin-top: 10px;" type="file" name="qr" id="qr" accept="image/png, image/gif, image/jpeg, image/jpg" onchange="canScan(); scanQRCode();">
             <sub>Uploaded Images are not retained.</sub>
             <br>
-            <button disabled style="margin-top: 20px;" type="submit" id="scan" onclick="scanQRCode()">Scan</button>
+            <div id="result" style="margin: 10px 0px;"></div>
+            <div id="redirectMsg" style="margin: 10px 0px;"></div>
+            <div id="urlScanMsg" style="margin: 10px 0px;"></div>
+            <button disabled style="margin-top: 20px;" type="submit" id="scan">Scan</button>
         </form>
-        <div id="result"></div>
     </div>
 
 
@@ -63,10 +43,6 @@
             <div id="phishScanMsg"></div>
             <button disabled style="margin-top: 20px;" type="submit" id="scan1">Scan</button>
         </form>
-    </div>
-
-    <div class="container">
-        <a id="reportButton">Report URL</a>
     </div>
 
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>

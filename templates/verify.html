@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %} Verification Success {% endblock %}
+
+{% block head %} {% endblock %}
+
+{% block body %}
+    <div class="container" style="text-align: center;">
+        <img src="{{ url_for('static', filename='images/verification_success.png') }}" alt="" width="100px">
+        <br><br>
+        <h1>Email Verification Successful</h1>
+        <h3>Your account has been created.</h3>
+    </div>
+
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 90vh;
+        margin: 0;
+        font-family: Arial, sans-serif;
+    }
+</style>
+{% endblock %}

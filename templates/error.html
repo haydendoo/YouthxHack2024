@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %} Error {{ code }} {% endblock %}
+
+{% block head %} {% endblock %}
+
+{% block body %}
+    <div class="container" style="text-align: center;">
+        <img src="static/images/error.png" alt="" width="100px">
+        <br><br>
+        <h1>Error {{ code }}</h1>
+        <h3>Please reload the page and try again later.</h3>
+    </div>
+
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 90vh;
+        margin: 0;
+        font-family: Arial, sans-serif;
+    }
+</style>
+
+{% endblock %}

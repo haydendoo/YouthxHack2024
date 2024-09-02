@@ -137,3 +137,32 @@ a {
     color: #007AFF;
     text-decoration: none;
 }
+
+#openReportButton {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 100px;
+    height: 40px;
+}
+
+#popup {
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.3);
+    text-align: center;
+    width: 100vw;
+    height: 100vh;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+
+.popup {
+    padding: 15px;
+    background-color: white;
+    width: 45vw;
+    max-width: 500px;
+    border-radius: 5px;
+    border: 1px solid gainsboro;
+}
