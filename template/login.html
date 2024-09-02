@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <title>Sign In</title>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <div class="navBar">
+        <img src="../static/images/logo.png" alt="logo">
+    </div>
+
+    <!-- Navigation Bar Spacing -->
+    <div style="height: 60px;"></div>
+
+    <!-- Account Creation Input -->
+    <div class="box">
+        <form action="" id="signInForm">
+            <h2 style="margin-top: 0;">Sign In</h2>
+            <label for="email"><b>Email Address</b></label>
+            <input style="margin-top: 10px;" type="email" placeholder="Enter Email" name="email" id="email"
+                oninput="canSignIn()" required>
+            <div style="height: 15px;"></div>
+            <label for="password"><b>Password</b></label>
+            <input style="margin-top: 10px;" type="password" placeholder="Enter Password" name="password" id="password"
+                oninput="canSignIn()" required>
+            <div style="height: 15px;"></div>
+            <button disabled style="margin-top: 20px;" type="submit" id="signInButton">Sign In</button>
+        </form>
+    </div>
+
+    <footer class="footer"></footer>
+
+    <script>
+        function canSignIn() {
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const submitButton = document.getElementById('signInButton');
+
+            const allFieldsFilled = emailInput.value !== '' && passwordInput.value !== '';
+
+            submitButton.disabled = !allFieldsFilled;
+        }
+    </script>
+
+
+
+</html>
+
+<style>
+
+</style>

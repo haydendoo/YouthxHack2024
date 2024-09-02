@@ -53,7 +53,7 @@ def forgetpassword():
     return render_template("forgetpassword.html")
 
 @app.route('/app')
-def app():
+def dashboard():
     return render_template('app.html')
 
 @app.route('/app/settings')
