@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %} Reset Password {% endblock %}
+
+{% block head %} {% endblock %}
+
+{% block body %} 
+    <!-- Account Creation =Input -->
+    <div class="box">
+        <form method="post" id="signUpForm">
+            <h2 style="margin-top: 0;">Reset Password</h2>
+            <div style="height: 15px;"></div>
+            <label for="password"><b>Password</b></label>
+            <input style="margin-top: 10px;" type="password" placeholder="Enter Password" name="password" id="password"
+                oninput="canCreate()" pattern=".{8,}" title="Password must have atleast 8 characters" required>
+            <div style="height: 15px;"></div>
+            <label for="confirmPassword"><b>Confirm Password</b></label>
+            <input style="margin-top: 10px;" type="password" placeholder="Confirm Password" name="confirmPassword"
+                id="confirmPassword" oninput="canCreate()" pattern=".{8,}" title="Password must have atleast 8 characters" required>
+            <sub style="color: rgb(192, 0, 0);" id="passwordsNotMatch" hidden>Passwords do not match</sub>
+            <div style="height: 5px;"></div>
+            <button disabled style="margin-top: 20px;" type="submit" id="create">Reset Password</button>
+            <p style="text-align: center; color: red;">{{ msg }}</p>
+        </form>
+    </div>
+
+    <script>
+        function canCreate() {
+            const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('confirmPassword');
+            const submitButton = document.getElementById('create');
+            const passwordsNotMatchText = document.getElementById('passwordsNotMatch');
+
+            // Check if all fields are filled
+            const allFieldsFilled = passwordInput.value !== '' && confirmPasswordInput.value !== '';
+
+            // Check if passwords match
+            const passwordsMatch = passwordInput.value === confirmPasswordInput.value;
+
+            // Show or hide the "passwordsNotMatch" text based on password match
+            if (!passwordsMatch) {
+                passwordsNotMatchText.style.display = 'block';
+            } else {
+                passwordsNotMatchText.style.display = 'none';
+            }
+
+            // Enable or disable the submit button
+            submitButton.disabled = !(allFieldsFilled && passwordsMatch);
+        }
+    </script>
+{% endblock %}

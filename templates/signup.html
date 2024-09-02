@@ -1,54 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../static/css/style.css">
-    <title>Create Account</title>
-</head>
+{% block title %} Login {% endblock %}
 
-<body>
-    <!-- Navigation Bar -->
-    <div class="navBar">
-        <img src="../static/images/logo.png" alt="logo">
-    </div>
+{% block head %} {% endblock %}
 
-    <!-- Navigation Bar Spacing -->
-    <div style="height: 60px;"></div>
-
+{% block body %} 
     <!-- Account Creation =Input -->
     <div class="box">
-        <form action="" id="signUpForm">
+        <form method="post" id="signUpForm">
             <h2 style="margin-top: 0;">Create Account</h2>
-            <label for="username"><b>Username</b></label>
-            <input style="margin-top: 10px;" type="text" placeholder="Enter Username" name="username" id="username"
-                oninput="canCreate()" required>
-            <div style="height: 15px;"></div>
             <label for="email"><b>Email Address</b></label>
             <input style="margin-top: 10px;" type="email" placeholder="Enter Email" name="email" id="email"
                 oninput="canCreate()" required>
             <div style="height: 15px;"></div>
             <label for="password"><b>Password</b></label>
             <input style="margin-top: 10px;" type="password" placeholder="Enter Password" name="password" id="password"
-                oninput="canCreate()" required>
+                oninput="canCreate()" pattern=".{8,}" title="Password must have atleast 8 characters" required>
             <div style="height: 15px;"></div>
             <label for="confirmPassword"><b>Confirm Password</b></label>
             <input style="margin-top: 10px;" type="password" placeholder="Confirm Password" name="confirmPassword"
-                id="confirmPassword" oninput="canCreate()" required>
+                id="confirmPassword" oninput="canCreate()" pattern=".{8,}" title="Password must have atleast 8 characters" required>
             <sub style="color: rgb(192, 0, 0);" id="passwordsNotMatch" hidden>Passwords do not match</sub>
-            <div style="height: 15px;"></div>
+            <div style="height: 5px;"></div>
             <button disabled style="margin-top: 20px;" type="submit" id="create">Create Account</button>
+            <p style="text-align: center;">Already have an account? Login <a href="{{ url_for('login') }}">here</a>. <br>Forgot password? Reset <a href="{{ url_for('forgetpassword') }}">here</a>.</p>
+            {% for msg in msgs %}
+                <p style="text-align: center; color: red;">{{ msg }}</p>
+            {% endfor %}
+            <p style="text-align: center; color: green;">{{ final }}</p>
         </form>
     </div>
 
-    <footer class="footer">
-
-    </footer>
-
     <script>
         function canCreate() {
-            const userNameInput = document.getElementById('username');
             const emailInput = document.getElementById('email');
             const passwordInput = document.getElementById('password');
             const confirmPasswordInput = document.getElementById('confirmPassword');
@@ -56,7 +40,7 @@
             const passwordsNotMatchText = document.getElementById('passwordsNotMatch');
 
             // Check if all fields are filled
-            const allFieldsFilled = userNameInput.value !== '' && emailInput.value !== '' && passwordInput.value !== '' && confirmPasswordInput.value !== '';
+            const allFieldsFilled = emailInput.value !== '' && passwordInput.value !== '' && confirmPasswordInput.value !== '';
 
             // Check if passwords match
             const passwordsMatch = passwordInput.value === confirmPasswordInput.value;
@@ -72,10 +56,4 @@
             submitButton.disabled = !(allFieldsFilled && passwordsMatch);
         }
     </script>
-
-
-</html>
-
-<style>
-
-</style>
+{% endblock %}

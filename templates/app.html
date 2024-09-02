@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %} Dashboard {% endblock %}
+
+{% block head %}
+    <script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js"></script>
+{% endblock %}
+
+{% block body %}
+    <div id="popup" hidden>
+        <div class="popup">
+            <div>
+                <h2>Report URL</h2>
+                <input id="urlReport" type="text" placeholder="Enter URL to report">
+                <br><br>
+                <form action="dashboard.html">
+                    <button onclick="g">Report</button>
+                </form>
+                <form style="margin-top: 10px;" action="dashboard.html">
+                    <button onclick="g">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" style="margin-top: 0px;">
+        <h1>Dashboard</h1>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Magnam accusantium ipsa, necessitatibus iure fugiat
+            illo impedit veritatis cum, culpa nesciunt quisquam numquam perferendis assumenda veniam possimus, suscipit
+            maiores eum harum!</p>
+    </div>
+
+    <!-- Traffic Light -->
+    <div class="box" id="trafficLight">
+        <h2 style="margin-top: 0;">Traffic Light</h2>
+        To Be Added.
+    </div>
+
+    <!-- URL/QR Input -->
+    <div class="box">
+        <form id="pageScanner" onsubmit="return false;">
+            <h2 style="margin-top: 0;">Page Scanner</h2>
+            <label for="url"><b>Enter target page URL</b></label>
+            <input style="margin-top: 10px;" type="text" placeholder="Enter URL" name="url" id="url"
+                oninput="canScan()">
+            <div style="height: 15px;"></div>
+            <label for="qr"><b>Upload QR code</b></label>
+            <input style="margin-top: 10px;" type="file" name="qr" id="qr" onchange="canScan()">
+            <sub>Uploaded Images are not retained.</sub>
+            <br>
+            <button disabled style="margin-top: 20px;" type="submit" id="scan" onclick="scanQRCode()">Scan</button>
+        </form>
+        <div id="result"></div>
+    </div>
+
+
+    <div class="box">
+        <form id="emailsmsScanner">
+            <h2 style="margin-top: 0;">Phishing Email/SMS Scanner</h2>
+            <label for="phishing"><b>Enter target content to scan</b></label>
+            <textarea style="margin-top: 10px;" name="phishing" id="phishing" placeholder="Enter email or SMS content" rows="10" oninput="canScan1()"></textarea>
+            <br>
+            <div id="phishScanMsg"></div>
+            <button disabled style="margin-top: 20px;" type="submit" id="scan1">Scan</button>
+        </form>
+    </div>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %} Settings {% endblock %}
+
+{% block head %} {% endblock %}
+
+{% block body %}
+    <div class="box">
+        <form method="post" id="Change Password">
+            <h2 style="margin-top: 0;">Change Password</h2>
+            <label for="current-password"><b>Current Password</b></label>
+            <input style="margin-top: 10px;" type="password" placeholder="Enter current password"
+                name="current-password" id="current-password" oninput="canChangePassword()" required>
+            <br>
+            <div style="height: 15px;"></div>
+            <label for="new-password"><b>New Password</b></label>
+            <input style="margin-top: 10px;" type="password" placeholder="Enter new password" name="new-password"
+                id="new-password" oninput="canChangePassword()" required>
+            <div style="height: 15px;"></div>
+            <label for="confirm-password"><b>Confirm New Password</b></label>
+            <input style="margin-top: 10px;" type="password" placeholder="Confirm new password" name="confirm-password"
+                id="confirm-password" oninput="canChangePassword()" required>
+            <sub style="color: rgb(192, 0, 0);" id="passwordsNotMatch" hidden>Passwords do not match</sub>
+            <button disabled style="margin-top: 20px;" type="submit" id="password" onclick="passwordQRCode()">Change
+                Password</button>
+            {% if not_match %}
+                <p style="text-align: center; color: red;">Passwords do not match</p>
+            {% endif %}
+            {% if too_small %}
+                <p style="text-align: center; color: red;">Password must be atleast 8 characters long</p>
+            {% endif %}
+            {% if wrong %}
+                <p style="text-align: center; color: red;">Wrong password entered</p>
+            {% endif %}
+            {% if success %}
+                <p style="text-align: center; color: green;">Success</p>
+            {% endif %}
+        </form>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function canChangePassword() {
+            const newPassword = document.getElementById('new-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const currentPassword = document.getElementById('current-password').value;
+            const submitButton = document.getElementById('password');
+            const passwordMatchMessage = document.getElementById('passwordsNotMatch');
+
+            if (newPassword !== '' && confirmPassword !== '' && currentPassword !== '' && newPassword === confirmPassword) {
+                submitButton.disabled = false;
+                passwordMatchMessage.hidden = true;
+            } else {
+                submitButton.disabled = true;
+                if (newPassword !== confirmPassword) {
+                    passwordMatchMessage.hidden = false;
+                } else {
+                    passwordMatchMessage.hidden = true;
+                }
+            }
+        }
+    </script>
+{% endblock %}

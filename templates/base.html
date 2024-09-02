@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- mobile metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <!-- site metas -->
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="keywords" content="YouthxHack, PhishNet, Phishing, Scam, Digital Defence">
+    <meta name="description" content="Phishnet. A tool to protect you online.">
+    <meta name="author" content="Segmentation Fault">
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/logo.png') }}">
+    {% block head %} {% endblock %}
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <header>
+        <nav class="navBar">
+            <a href="{{ url_for('dashboard') }}"><img src="{{ url_for('static', filename='images/logo.png') }}" alt="logo"></a>
+            <div class="loginWrapper">
+                <a class="loginbtn" href="{{ url_for('login') }}">Login</a>
+                <a class="loginbtn" href="{{ url_for('signup') }}">Sign Up</a>
+                <a href="{{ url_for('logout') }}" style="display: flex; justify-content: center; align-items: center;"><img style="height: 35px;" src="{{ url_for('static', filename='images/logout.webp') }}"></a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Navigation Bar Spacing -->
+    <div style="height: 60px;"></div>
+
+    <main>{% block body %} {% endblock %}</main>
+
+    <footer class="footer-container">
+        © 2024 All Rights Reserved.
+    </footer>
+</html>

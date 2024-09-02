@@ -1,26 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../static/css/style.css">
-    <title>Sign In</title>
-</head>
+{% block title %} Login {% endblock %}
 
-<body>
-    <!-- Navigation Bar -->
-    <div class="navBar">
-        <img src="../static/images/logo.png" alt="logo">
-    </div>
+{% block head %} {% endblock %}
 
-    <!-- Navigation Bar Spacing -->
-    <div style="height: 60px;"></div>
-
+{% block body %} 
     <!-- Account Creation Input -->
     <div class="box">
-        <form action="" id="signInForm">
-            <h2 style="margin-top: 0;">Sign In</h2>
+        <form method="post" id="signInForm">
+            <h2 style="margin-top: 0;">Login</h2>
             <label for="email"><b>Email Address</b></label>
             <input style="margin-top: 10px;" type="email" placeholder="Enter Email" name="email" id="email"
                 oninput="canSignIn()" required>
@@ -28,12 +16,12 @@
             <label for="password"><b>Password</b></label>
             <input style="margin-top: 10px;" type="password" placeholder="Enter Password" name="password" id="password"
                 oninput="canSignIn()" required>
-            <div style="height: 15px;"></div>
-            <button disabled style="margin-top: 20px;" type="submit" id="signInButton">Sign In</button>
+            <div style="height: 5px;"></div>
+            <button disabled style="margin-top: 20px;" type="submit" id="signInButton">Login</button>
+            <p style="text-align: center;">Don't have an account? Sign up <a href="{{ url_for('signup') }}">here</a>. <br>Forgot password? Reset <a href="{{ url_for('forgetpassword') }}">here</a>.</p>
+            <p style="text-align: center; color: red;">{{ msg }}</p>
         </form>
     </div>
-
-    <footer class="footer"></footer>
 
     <script>
         function canSignIn() {
@@ -46,11 +34,4 @@
             submitButton.disabled = !allFieldsFilled;
         }
     </script>
-
-
-
-</html>
-
-<style>
-
-</style>
+{% endblock %}
