@@ -19,7 +19,12 @@
             <div style="height: 5px;"></div>
             <button disabled style="margin-top: 20px;" type="submit" id="signInButton">Login</button>
             <p style="text-align: center;">Don't have an account? Sign up <a href="{{ url_for('signup') }}">here</a>. <br>Forgot password? Reset <a href="{{ url_for('forgetpassword') }}">here</a>.</p>
-            <p style="text-align: center; color: red;">{{ msg }}</p>
+            <p style="text-align: center; color: red;">
+                {{ msg }}
+                {% if reverify %}
+                    Click <a href="/">here</a> to resend verification if you need.
+                {% endif %}
+            </p>
         </form>
     </div>
 

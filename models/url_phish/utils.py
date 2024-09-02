@@ -3,7 +3,6 @@ from urllib.parse import urlparse
 import pandas as pd
 import tldextract
 from nltk.tokenize import RegexpTokenizer
-from models.url_phish.converter import Converter
 
 model = joblib.load("models/url_phish/model.pkl")
 
