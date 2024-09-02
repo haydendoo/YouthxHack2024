@@ -10,6 +10,7 @@ import re
 from argon2 import PasswordHasher
 import secrets
 import datetime
+import requests
 
 from models.emailsms_phish import is_emailsms_phishing
 
@@ -25,6 +26,7 @@ app.config['PERMANENT_SESSION_LIFETIME'] = datetime.timedelta(days=30)
 
 NOREPLY_EMAIL = "noreply.haydenhow@gmail.com"
 DATABASE = 'database.db'
+WEBHOOK = os.getenv("DISCORD_WEBHOOK")
 
 def get_db():
     db = getattr(g, '_database', None)
@@ -197,7 +199,6 @@ def settings():
             cursor = db.cursor()
             user = cursor.execute("SELECT * FROM users WHERE id=?", (get_userid(),)).fetchone()
             ph = PasswordHasher()
-            print(current, user[2])
             try:
                 ph.verify(user[2], current)
             except:
@@ -230,6 +231,23 @@ def verify_emailsms():
 def report():
     if not logged_in():
         abort(401)
+
+    url = request.data.decode("utf-8")
+    if url == None:
+        abort(404)
+
+    with app.app_context():
+        db = get_db()
+        cursor = db.cursor()
+        email = cursor.execute("SELECT * FROM users WHERE id=?", (get_userid(),)).fetchone()[1]
+        approve_link = 
+        data = {
+            "username": "PhishNet Bot",
+            "content": f"{email} has reported a new phishing URL (```{url}```).\nClick here to approve of the new URL.\n{approve_link}"
+        }
+        res = requests.post(WEBHOOK, json=data)
+        if res.status_code // 100 != 2: # Check 1st digit is 2 or not
+            return jsonify({"success", "false"})
 
     pass
 

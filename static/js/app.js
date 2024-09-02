@@ -69,3 +69,12 @@ document.getElementById("emailsmsScanner").addEventListener("submit", async (ev)
         ans.style.color = "green";
     }
 });
+
+document.getElementById('reportButton').addEventListener('click', function (event) {
+    event.preventDefault(); // Prevent form submission
+    document.getElementById('popup').hidden = false;
+});
+
+function closePopup() {
+    document.getElementById('popup').hidden = true;
+}
