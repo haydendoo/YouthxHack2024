@@ -59,7 +59,10 @@
     <!-- Navigation Bar -->
     <header>
         <nav class="navBar">
-            <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='images/logo.png') }}" alt="logo"></a>
+            <div class="loginWrapper">
+                <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='images/logo.png') }}" alt="logo"></a>
+                <a class="loginbtn" href="{{ url_for('dashboard') }}" style="margin-left: 10px;">App</a>
+            </div>
             <div class="loginWrapper">
                 <a class="loginbtn" href="{{ url_for('login') }}">Login</a>
                 <a class="loginbtn" href="{{ url_for('signup') }}">Sign Up</a>

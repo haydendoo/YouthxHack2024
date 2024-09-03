@@ -21,15 +21,15 @@ function showDesc(color) {
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === 'redAlert') {
+        text['red'] = message.text;
         hideDesc("green");
         hideDesc("yellow");
         showDesc("red");
-        text['red'] = message.text;
     }
     else if(message.action === "yellowAlert") {
+        text['yellow'] = message.text;
         hideDesc("green");
         hideDesc("red");
         showDesc("yellow");
-        text['yellow'] = message.text;
     }
 });
